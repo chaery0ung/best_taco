@@ -1,0 +1,140 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #2b1b12;
+  background: #fffaf3;
+}
+
+.hero {
+  background: linear-gradient(135deg, #e8552e 0%, #f6a531 100%);
+  color: #fff;
+  padding-bottom: 4rem;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border: 2px solid #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover {
+  background: #fff;
+  color: #e8552e;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 700px;
+  margin: 3rem auto 0;
+  padding: 0 1.5rem;
+}
+
+.hero-content h1 {
+  font-size: 2.75rem;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1.15rem;
+  opacity: 0.95;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  display: inline-block;
+  background: #2b1b12;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: transform 0.15s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+}
+
+.spots {
+  max-width: 1100px;
+  margin: -3rem auto 4rem;
+  padding: 0 1.5rem;
+}
+
+.spots h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #e8552e;
+  background: #fffaf3;
+  display: inline-block;
+  padding: 0 1rem;
+}
+
+.spots > h2 {
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(43, 27, 18, 0.08);
+  border: 1px solid #f1e2d0;
+}
+
+.card h3 {
+  color: #2b1b12;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  color: #5a4636;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.tag {
+  display: inline-block;
+  background: #fbeadb;
+  color: #e8552e;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #8a7461;
+  font-size: 0.9rem;
+}
