@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Green Flag</title>
+<link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <h1>🟢 Green Flag</h1>
+    <label class="toggle">
+      <input type="checkbox" id="enabledToggle" checked />
+      <span>Enabled</span>
+    </label>
+  </header>
+
+  <section class="card" id="riskCard">
+    <h2>Seller risk (this conversation/listing)</h2>
+    <div class="risk-row">
+      <div class="risk-badge" id="riskBadge">-</div>
+      <div class="risk-score" id="riskScore">No data yet</div>
+    </div>
+    <ul class="hit-list" id="hitList"></ul>
+    <p class="hint">Only the seller's messages and listing text are inspected — your own messages are never scored.</p>
+  </section>
+
+  <section class="card">
+    <h2>Transaction risk (quick calculator)</h2>
+    <div class="form-row">
+      <label>Offered price ($)</label>
+      <input type="number" id="price" placeholder="e.g. 50" />
+    </div>
+    <div class="form-row">
+      <label>Typical market price ($)</label>
+      <input type="number" id="marketPrice" placeholder="e.g. 150" />
+    </div>
+    <div class="form-row">
+      <label>Payment method requested</label>
+      <select id="payment">
+        <option value="safe_payment">Platform secure checkout</option>
+        <option value="prepay_zelle">Zelle / Cash App prepayment</option>
+        <option value="in_person">Cash in person</option>
+      </select>
+    </div>
+    <div class="form-row checkbox-row">
+      <label><input type="checkbox" id="lateNight" /> Requesting a late-night meetup (12am-5am)</label>
+    </div>
+    <button id="calcBtn">Calculate risk</button>
+    <div class="risk-row" id="txResultRow" style="display:none;">
+      <div class="risk-badge" id="txRiskBadge">-</div>
+      <div class="risk-score" id="txRiskScore"></div>
+    </div>
+    <ul class="hit-list" id="txHitList"></ul>
+  </section>
+
+  <script src="scorer.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

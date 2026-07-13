@@ -1,0 +1,94 @@
+.sft-flagged {
+  position: relative;
+}
+.sft-flagged-medium {
+  outline: 2px solid #f5a623;
+  outline-offset: 2px;
+}
+.sft-flagged-high {
+  outline: 2px solid #e0392b;
+  outline-offset: 2px;
+}
+.sft-badge {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 10px;
+  vertical-align: middle;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.sft-badge-medium {
+  background: #fff4e0;
+  color: #b3600a;
+}
+.sft-badge-high {
+  background: #fdecea;
+  color: #c0271c;
+}
+
+/* Draggable Green Flag risk widget */
+#sft-flag-widget {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  left: auto;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border-radius: 999px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  border: 2px solid #2e7d46;
+  color: #1f2937;
+}
+#sft-flag-widget.sft-dragging {
+  cursor: grabbing;
+  opacity: 0.92;
+}
+#sft-flag-widget .sft-flag-icon {
+  display: block;
+}
+#sft-flag-widget .sft-flag-pct {
+  min-width: 2.4em;
+  text-align: right;
+}
+
+.sft-flag-level-low {
+  border-color: #2e7d46;
+}
+.sft-flag-level-low .sft-flag-cloth {
+  fill: #2e7d46;
+}
+.sft-flag-level-low .sft-flag-pct {
+  color: #2e7d46;
+}
+
+.sft-flag-level-medium {
+  border-color: #f5a623;
+}
+.sft-flag-level-medium .sft-flag-cloth {
+  fill: #f5a623;
+}
+.sft-flag-level-medium .sft-flag-pct {
+  color: #b3600a;
+}
+
+.sft-flag-level-high {
+  border-color: #e0392b;
+}
+.sft-flag-level-high .sft-flag-cloth {
+  fill: #e0392b;
+}
+.sft-flag-level-high .sft-flag-pct {
+  color: #c0271c;
+}

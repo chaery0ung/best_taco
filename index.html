@@ -1,64 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>best_taco</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<title>Demo: Green Flag on a marketplace listing</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f3f4f6;
+    margin: 0;
+    padding: 24px;
+    color: #111827;
+  }
+  .wrap {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  p.sub {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+  .listing {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .listing h1 {
+    font-size: 18px;
+    margin: 0 0 8px;
+  }
+  .description {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.5;
+  }
+  .listing-controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+  }
+  .chat-window {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .chat-message {
+    max-width: 78%;
+    padding: 8px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .chat-message[data-sender="them"] {
+    align-self: flex-start;
+    background: #f1f3f5;
+  }
+  .chat-message[data-sender="me"] {
+    align-self: flex-end;
+    background: #dbeafe;
+  }
+  .controls {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .row {
+    display: flex;
+    gap: 8px;
+  }
+  select, input, button {
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+  }
+  input[type="text"] {
+    flex: 1;
+  }
+  button {
+    background: #111827;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #1f2937;
+  }
+  .scenario-row select {
+    flex: 1;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin: 20px 0 6px;
+  }
+</style>
 </head>
 <body>
-  <header class="hero">
-    <nav class="navbar">
-      <span class="logo">🌮 Best Taco SD</span>
-      <a href="#spots" class="nav-link">See Spots</a>
-    </nav>
-    <div class="hero-content">
-      <h1>The Best Taco Places of San Diego</h1>
-      <p>A hand-picked guide to the tacos worth crossing town for.</p>
-      <a href="#spots" class="cta-button">Explore the List</a>
+<div class="wrap">
+  <h1>Demo: Green Flag on a marketplace listing</h1>
+  <p class="sub">
+    Loads the same scorer.js / flag-widget.js / content.js the real extension uses.
+    The flag in the top-right is draggable — try moving it. Only the seller's
+    ("them") messages and the listing text are scored; your own ("me") messages
+    never affect the flag.
+  </p>
+
+  <div class="section-label">Listing (seller-written)</div>
+  <div class="listing">
+    <h1 id="listingTitle">iPhone 13 Pro, 128GB - like new</h1>
+    <div class="description" id="listingDesc">
+      Barely used, no scratches, comes with original box and charger. Selling because I upgraded.
     </div>
-  </header>
+    <div class="listing-controls">
+      <button id="riskyListingBtn">Load a risky listing</button>
+      <button id="normalListingBtn" style="background:#6b7280;">Reset to normal listing</button>
+    </div>
+  </div>
 
-  <main>
-    <section id="spots" class="spots">
-      <h2>Top Picks</h2>
-      <div class="card-grid">
-        <article class="card">
-          <h3>Carnitas Snack Shack</h3>
-          <p>Slow-roasted carnitas piled high with tangy salsa verde.</p>
-          <span class="tag">North Park</span>
-        </article>
-        <article class="card">
-          <h3>Lucha Libre Taco Shop</h3>
-          <p>Adrian's California Combo — bold, messy, unforgettable.</p>
-          <span class="tag">Mission Hills</span>
-        </article>
-        <article class="card">
-          <h3>El Take It Easy</h3>
-          <p>A late-night favorite with perfectly charred al pastor.</p>
-          <span class="tag">South Park</span>
-        </article>
-        <article class="card">
-          <h3>Salud!</h3>
-          <p>Colorful patio, cold beer, and tacos that never miss.</p>
-          <span class="tag">Barrio Logan</span>
-        </article>
-        <article class="card">
-          <h3>Mariscos German</h3>
-          <p>Legendary shrimp tacos straight from a street cart.</p>
-          <span class="tag">City Heights</span>
-        </article>
-        <article class="card">
-          <h3>Puesto</h3>
-          <p>Craft tacos with a modern twist and fresh tortillas.</p>
-          <span class="tag">Multiple Locations</span>
-        </article>
-      </div>
-    </section>
-  </main>
+  <div class="section-label">Chat with seller</div>
+  <div class="chat-window" id="chatWindow"></div>
 
-  <footer>
-    <p>&copy; 2026 Best Taco SD. Made with love (and salsa) in San Diego.</p>
-  </footer>
+  <div class="controls">
+    <div class="row scenario-row">
+      <select id="scenarioSelect">
+        <option value="">-- choose a scenario --</option>
+        <option value="urgency">① Seller pressures with urgency ("I'll sell to someone else")</option>
+        <option value="phishing">② Off-platform redirect + verification-code phishing</option>
+        <option value="overpayment">③ Cashier's-check overpayment + shipping scam</option>
+      </select>
+      <button id="playScenario">Play scenario</button>
+    </div>
+    <div class="row">
+      <input type="text" id="msgInput" placeholder="Type a message (e.g. can you send a verification code?)" />
+      <select id="senderSelect">
+        <option value="them">Seller (them)</option>
+        <option value="me">Me (buyer)</option>
+      </select>
+      <button id="sendBtn">Send</button>
+    </div>
+    <button id="resetBtn" style="background:#6b7280;">Reset conversation</button>
+  </div>
+</div>
+
+<script src="scorer.js"></script>
+<script src="flag-widget.js"></script>
+<script src="content.js"></script>
+<link rel="stylesheet" href="content.css" />
+<script>
+  const chatWindow = document.getElementById('chatWindow');
+
+  function addMessage(sender, text) {
+    const div = document.createElement('div');
+    div.className = 'chat-message';
+    div.dataset.sender = sender;
+    div.textContent = text;
+    chatWindow.appendChild(div);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  const SCENARIOS = {
+    urgency: [
+      ['them', "Hey, thanks for reaching out!"],
+      ['them', "I've got another buyer interested, let me know today or I'll sell to them."],
+      ['them', "This won't last, message me back asap if you want it."]
+    ],
+    phishing: [
+      ['them', "Let's move this off the app, text me instead, easier to coordinate."],
+      ['them', "I'll set up the shipping label for you, just send me the verification code you just got."],
+      ['them', "Actually, can you Zelle me first and I'll ship right after?"]
+    ],
+    overpayment: [
+      ['them', "No problem, I can do a cashier's check for a bit more than the price."],
+      ['them', "Just send back the difference once it clears and we're good."],
+      ['them', "I'm out of town this week so I'll have my shipper come pick it up."]
+    ]
+  };
+
+  document.getElementById('playScenario').addEventListener('click', () => {
+    const key = document.getElementById('scenarioSelect').value;
+    if (!key) return;
+    const messages = SCENARIOS[key];
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i >= messages.length) {
+        clearInterval(timer);
+        return;
+      }
+      const [sender, text] = messages[i++];
+      addMessage(sender, text);
+    }, 700);
+  });
+
+  document.getElementById('sendBtn').addEventListener('click', () => {
+    const input = document.getElementById('msgInput');
+    const sender = document.getElementById('senderSelect').value;
+    const text = input.value.trim();
+    if (!text) return;
+    addMessage(sender, text);
+    input.value = '';
+  });
+
+  document.getElementById('msgInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('sendBtn').click();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    chatWindow.innerHTML = '';
+  });
+
+  document.getElementById('riskyListingBtn').addEventListener('click', () => {
+    document.getElementById('listingTitle').textContent = 'iPhone 13 Pro - MUST SELL TODAY, moving out of country';
+    document.getElementById('listingDesc').textContent =
+      "Priced to sell fast, other buyers are already interested so first come first served. " +
+      "I'm out of town so I'll have my shipper pick it up, prefer Zelle or Cash App payment upfront.";
+  });
+
+  document.getElementById('normalListingBtn').addEventListener('click', () => {
+    document.getElementById('listingTitle').textContent = 'iPhone 13 Pro, 128GB - like new';
+    document.getElementById('listingDesc').textContent =
+      'Barely used, no scratches, comes with original box and charger. Selling because I upgraded.';
+  });
+</script>
 </body>
 </html>

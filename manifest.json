@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Green Flag - Marketplace Chat Fraud Detection (Demo)",
+  "version": "0.2.0",
+  "description": "Flags scam patterns in a seller's chat messages and listing text in real time on eBay, OfferUp, and Facebook Marketplace with a draggable risk flag.",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.ebay.com/*",
+        "https://*.offerup.com/*",
+        "https://*.facebook.com/marketplace/*",
+        "https://*.facebook.com/messages/*"
+      ],
+      "js": ["scorer.js", "flag-widget.js", "content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
