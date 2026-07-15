@@ -10,6 +10,7 @@
   <header class="hero">
     <nav class="navbar">
       <span class="logo">🌮 Best Taco SD</span>
+      <span id="welcome-banner" class="welcome-banner" hidden></span>
       <a href="#spots" class="nav-link">See Spots</a>
     </nav>
     <div class="hero-content">
@@ -60,5 +61,17 @@
   <footer>
     <p>&copy; 2026 Best Taco SD. Made with love (and salsa) in San Diego.</p>
   </footer>
+
+  <script>
+    fetch('/api/welcome-user')
+      .then((res) => res.json())
+      .then(({ name }) => {
+        if (!name) return;
+        const banner = document.getElementById('welcome-banner');
+        banner.textContent = `환영합니다, ${name}님`;
+        banner.hidden = false;
+      })
+      .catch(() => {});
+  </script>
 </body>
 </html>
