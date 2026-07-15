@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>프로필 입력 - Skin Watch AR</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="app">
+  <div class="topbar"><h1>기본 정보 입력</h1></div>
+  <main>
+    <p class="center-note" style="text-align:left; padding-top:0;">정확한 분석을 위해 몇 가지 정보가 필요해요.</p>
+    <div class="card">
+      <label for="age">나이</label>
+      <input type="number" id="age" min="1" max="120" placeholder="예: 34" />
+
+      <label for="gender">성별</label>
+      <select id="gender">
+        <option value="여성">여성</option>
+        <option value="남성">남성</option>
+        <option value="기타">기타</option>
+      </select>
+
+      <label for="skin-tone">피부톤 (Fitzpatrick 타입 기준)</label>
+      <select id="skin-tone">
+        <option value="타입 I (매우 밝음)">타입 I (매우 밝음)</option>
+        <option value="타입 II (밝음)">타입 II (밝음)</option>
+        <option value="타입 III (보통)" selected>타입 III (보통)</option>
+        <option value="타입 IV (약간 어두움)">타입 IV (약간 어두움)</option>
+        <option value="타입 V (어두움)">타입 V (어두움)</option>
+        <option value="타입 VI (매우 어두움)">타입 VI (매우 어두움)</option>
+      </select>
+
+      <button class="btn" id="save-btn">다음</button>
+      <div class="error-msg" id="onboarding-error"></div>
+    </div>
+  </main>
+</div>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/onboarding.js"></script>
+</body>
+</html>

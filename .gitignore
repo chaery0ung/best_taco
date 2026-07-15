@@ -1,3 +1,10 @@
-.claude/
-node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.db
+backend/app/uploads/*
+!backend/app/uploads/.gitkeep
 .env
+.DS_Store
+node_modules/

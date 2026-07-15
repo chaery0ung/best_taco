@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>분석 결과 - Skin Watch AR</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <button class="back-btn" onclick="window.location.href='/bodymap.html'">←</button>
+    <h1>분석 결과</h1>
+  </div>
+  <main>
+    <div id="loading" class="spinner"></div>
+    <div id="content" style="display:none">
+      <div class="card">
+        <div class="result-hero">
+          <img id="orig-img" alt="촬영 원본" />
+          <img id="heatmap-img" alt="AI 히트맵" />
+        </div>
+        <p class="center-note" style="padding:6px 0 0;">원본 사진 · Explainable AI 히트맵</p>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div id="classification" style="font-size:17px; font-weight:700;"></div>
+            <div class="meta" id="confidence" style="color:var(--text-muted); font-size:13px; margin-top:4px;"></div>
+          </div>
+          <span id="urgency-pill" class="pill"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin:0 0 8px; font-size:14px; color:var(--text-muted);">Gemini 자연어 리포트</h3>
+        <div class="report-text" id="gemini-report"></div>
+      </div>
+
+      <div id="high-urgency-block" style="display:none">
+        <button class="btn danger" onclick="window.location.href='/clinics.html'">🏥 주변 피부과 찾기</button>
+        <button class="btn secondary" id="pdf-btn">📄 PDF 리포트 저장</button>
+      </div>
+      <div id="low-urgency-block" style="display:none">
+        <button class="btn secondary" id="pdf-btn-low">📄 PDF 리포트 저장</button>
+        <button class="btn outline" id="reminder-btn">🔔 재촬영 알림 예약 (3개월 후)</button>
+      </div>
+
+      <button class="btn outline" id="history-btn">📊 히스토리에서 변화 비교</button>
+    </div>
+  </main>
+</div>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/result.js"></script>
+</body>
+</html>

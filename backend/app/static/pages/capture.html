@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AR 촬영 가이드 - Skin Watch AR</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <button class="back-btn" onclick="history.back()">←</button>
+    <h1 id="capture-title">AR 촬영 가이드</h1>
+  </div>
+  <main>
+    <p class="center-note" id="guide-hint" style="padding-top:0;">
+      동전을 기준점 원에 맞추고, 병변을 중앙 원 안에 위치시켜 주세요
+    </p>
+
+    <div class="camera-wrap">
+      <video id="video" autoplay playsinline muted style="display:none"></video>
+      <img id="file-preview" style="display:none" />
+      <canvas id="overlay"></canvas>
+    </div>
+
+    <div id="camera-error" class="error-msg" style="margin-top:10px;"></div>
+
+    <input type="file" id="file-input" accept="image/*" capture="environment" style="display:none" />
+
+    <button class="shutter-btn" id="shutter-btn" title="촬영"></button>
+    <button class="btn secondary" id="file-btn">📁 사진 파일로 촬영/선택</button>
+
+    <div id="uploading" style="display:none" class="center-note">
+      <div class="spinner"></div>
+      AI가 이미지를 분석하고 있어요...
+    </div>
+  </main>
+</div>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/capture.js"></script>
+</body>
+</html>

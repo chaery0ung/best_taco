@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>병변 히스토리 - Skin Watch AR</title>
+<link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <button class="back-btn" onclick="window.location.href='/bodymap.html'">←</button>
+    <h1 id="lesion-title">병변 히스토리</h1>
+  </div>
+  <main>
+    <div id="loading" class="spinner"></div>
+    <div id="content" style="display:none">
+      <div class="card">
+        <div id="timeline"></div>
+      </div>
+      <button class="btn" id="retake-btn">📷 재촬영하기</button>
+    </div>
+  </main>
+</div>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/lesion.js"></script>
+</body>
+</html>
