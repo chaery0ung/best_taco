@@ -1,4 +1,4 @@
-const TOKEN_KEY = "skinwatch_token";
+const TOKEN_KEY = "dermalyze_token";
 
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);

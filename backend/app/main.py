@@ -10,7 +10,7 @@ from .routers import auth, capture, clinics, lesions, profile, reports
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Skin Watch AR API")
+app = FastAPI(title="Dermalyze API")
 
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
