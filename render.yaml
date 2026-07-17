@@ -15,6 +15,12 @@ services:
           property: connectionString
       - key: JWT_SECRET
         generateValue: true
+      - key: VERTEX_PROJECT
+        value: "94890171980"
+      - key: VERTEX_ENDPOINT_ID
+        value: "6896410158050574336"
+      - key: VERTEX_LOCATION
+        value: us-central1
 
 databases:
   - name: skin-watch-ar-db
