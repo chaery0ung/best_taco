@@ -12,11 +12,11 @@ import random
 from PIL import Image, ImageDraw, ImageFilter
 
 CLASSES = [
-    {"key": "nevus", "label": "양성 모반 (Nevus)", "urgency": "low", "weight": 40},
-    {"key": "seborrheic_keratosis", "label": "지루각화증 (Seborrheic Keratosis)", "urgency": "low", "weight": 25},
-    {"key": "actinic_keratosis", "label": "광선각화증 의심 (Actinic Keratosis)", "urgency": "low", "weight": 15},
-    {"key": "bcc", "label": "기저세포암 의심 (Basal Cell Carcinoma)", "urgency": "high", "weight": 12},
-    {"key": "melanoma", "label": "흑색종 의심 (Melanoma)", "urgency": "high", "weight": 8},
+    {"key": "nevus", "label": "Nevus (benign mole)", "urgency": "low", "weight": 40},
+    {"key": "seborrheic_keratosis", "label": "Seborrheic Keratosis", "urgency": "low", "weight": 25},
+    {"key": "actinic_keratosis", "label": "Actinic Keratosis (suspected)", "urgency": "low", "weight": 15},
+    {"key": "bcc", "label": "Basal Cell Carcinoma (suspected)", "urgency": "high", "weight": 12},
+    {"key": "melanoma", "label": "Melanoma (suspected)", "urgency": "high", "weight": 8},
 ]
 
 MAX_DIM = 512

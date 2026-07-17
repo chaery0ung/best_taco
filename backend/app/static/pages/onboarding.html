@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>프로필 입력 - Dermalyze</title>
+<title>Profile - Dermalyze</title>
 <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
 <div class="app">
-  <div class="topbar"><h1>기본 정보 입력</h1></div>
+  <div class="topbar"><h1>Basic Info</h1></div>
   <main>
-    <p class="center-note" style="text-align:left; padding-top:0;">정확한 분석을 위해 몇 가지 정보가 필요해요.</p>
+    <p class="center-note" style="text-align:left; padding-top:0;">We need a couple of details for accurate analysis.</p>
     <div class="card">
-      <label for="age">나이</label>
-      <input type="number" id="age" min="1" max="120" placeholder="예: 34" />
+      <label for="age">Age</label>
+      <input type="number" id="age" min="1" max="120" placeholder="e.g. 34" />
 
-      <label for="gender">성별</label>
+      <label for="gender">Gender</label>
       <select id="gender">
-        <option value="여성">여성</option>
-        <option value="남성">남성</option>
-        <option value="기타">기타</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+        <option value="Other">Other</option>
       </select>
 
-      <button class="btn" id="save-btn">다음</button>
+      <button class="btn" id="save-btn">Next</button>
       <div class="error-msg" id="onboarding-error"></div>
     </div>
   </main>

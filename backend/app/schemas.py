@@ -74,7 +74,6 @@ class LesionSummary(BaseModel):
     latest_classification: Optional[str] = None
     latest_urgency: Optional[str] = None
     latest_created_at: Optional[datetime.datetime] = None
-    change_status: Optional[str] = None  # "new" | "no_change" | "changed"
 
     class Config:
         from_attributes = True

@@ -8,14 +8,6 @@ from ..database import get_db
 router = APIRouter(prefix="/api/lesions", tags=["lesions"])
 
 
-def _change_status(captures: list[models.Capture]) -> str | None:
-    if not captures:
-        return None
-    if len(captures) == 1:
-        return "new"
-    return "no_change" if captures[-1].classification == captures[-2].classification else "changed"
-
-
 @router.get("", response_model=list[schemas.LesionSummary])
 def list_lesions(
     body_part: str | None = None,
@@ -39,7 +31,6 @@ def list_lesions(
                 latest_classification=latest.classification if latest else None,
                 latest_urgency=latest.urgency if latest else None,
                 latest_created_at=latest.created_at if latest else None,
-                change_status=_change_status(captures),
             )
         )
     return summaries
@@ -70,7 +61,7 @@ def get_lesion(
         .first()
     )
     if not lesion:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="병변을 찾을 수 없습니다")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lesion not found")
     return lesion
 
 
@@ -86,6 +77,6 @@ def delete_lesion(
         .first()
     )
     if not lesion:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="병변을 찾을 수 없습니다")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lesion not found")
     db.delete(lesion)
     db.commit()

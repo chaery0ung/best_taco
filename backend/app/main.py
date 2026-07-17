@@ -44,10 +44,8 @@ app.add_api_route("/", _page("index.html"), methods=["GET"], include_in_schema=F
 for page in [
     "onboarding.html",
     "bodymap.html",
-    "lesion.html",
     "capture.html",
     "result.html",
-    "history.html",
     "clinics.html",
 ]:
     app.add_api_route(f"/{page}", _page(page), methods=["GET"], include_in_schema=False)

@@ -27,9 +27,9 @@ async function load() {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(map);
 
-    L.marker([center.lat, center.lng], { title: "내 위치" })
+    L.marker([center.lat, center.lng], { title: "My Location" })
       .addTo(map)
-      .bindPopup("내 위치")
+      .bindPopup("My Location")
       .openPopup();
 
     clinics.forEach((c) => {

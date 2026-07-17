@@ -16,37 +16,12 @@ function showView(view) {
   document.getElementById("svg-back").style.display = view === "back" ? "block" : "none";
 }
 
-function changeBadge(status) {
-  if (status === "changed") return '<span class="pill high">변화 감지 ⚠️</span>';
-  if (status === "no_change") return '<span class="pill low">변화 없음 ✅</span>';
-  return '<span class="pill neutral">신규 등록</span>';
-}
-
-function renderPartPanel(part) {
+function selectPart(part) {
   selectedPart = part;
   document.getElementById("empty-hint").style.display = "none";
   const panel = document.getElementById("part-panel");
   panel.style.display = "block";
   document.getElementById("part-title").textContent = bodyPartLabel(part);
-
-  const lesions = lesionsByPart[part] || [];
-  const listEl = document.getElementById("part-lesions");
-  if (lesions.length === 0) {
-    listEl.innerHTML = '<p class="center-note" style="padding:6px 0;">등록된 병변이 없습니다</p>';
-  } else {
-    listEl.innerHTML = lesions
-      .map(
-        (l) => `
-      <a class="lesion-item" href="/lesion.html?id=${l.id}">
-        <div>
-          <div>${l.label || "병변 #" + l.id}</div>
-          <div class="meta">${l.latest_classification || "촬영 기록 없음"}</div>
-        </div>
-        ${changeBadge(l.change_status)}
-      </a>`
-      )
-      .join("");
-  }
 }
 
 function applyMapColors() {
@@ -73,12 +48,12 @@ async function loadLesions() {
 }
 
 document.querySelectorAll(".body-part").forEach((el) => {
-  el.addEventListener("click", () => renderPartPanel(el.dataset.part));
+  el.addEventListener("click", () => selectPart(el.dataset.part));
 });
 
-document.getElementById("add-lesion-btn").addEventListener("click", async () => {
+document.getElementById("take-photo-btn").addEventListener("click", async () => {
   if (!selectedPart) return;
-  const btn = document.getElementById("add-lesion-btn");
+  const btn = document.getElementById("take-photo-btn");
   btn.disabled = true;
   try {
     const lesion = await apiFetch("/api/lesions", { method: "POST", json: { body_part: selectedPart } });

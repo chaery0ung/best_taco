@@ -3,14 +3,14 @@ import math
 import random
 
 CLINIC_NAME_POOL = [
-    "서울숲 피부과의원",
-    "연세미소 피부과",
-    "그린 스킨클리닉",
-    "청담 더마 클리닉",
-    "우리동네 피부과의원",
-    "하늘 피부과",
-    "봄날 피부과의원",
-    "메디스킨 클리닉",
+    "Seoul Forest Dermatology Clinic",
+    "Yonsei Smile Dermatology",
+    "Green Skin Clinic",
+    "Cheongdam Derma Clinic",
+    "Neighborhood Dermatology Clinic",
+    "Sky Dermatology",
+    "Spring Day Dermatology Clinic",
+    "MediSkin Clinic",
 ]
 
 DEFAULT_LAT = 37.5665  # Seoul City Hall, used when the client can't get geolocation
@@ -39,7 +39,7 @@ def nearby_dermatology(lat: float | None, lng: float | None) -> list[dict]:
         clinics.append(
             {
                 "name": name,
-                "address": f"서울시 인근 {rng.randint(1, 200)}번지",
+                "address": f"Near Seoul, Block {rng.randint(1, 200)}",
                 "lat": offset_lat,
                 "lng": offset_lng,
                 "distance_km": round(distance, 2),

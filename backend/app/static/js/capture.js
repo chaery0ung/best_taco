@@ -12,7 +12,6 @@ const cameraWrap = document.querySelector(".camera-wrap");
 
 let mode = null; // "camera" | "file"
 let selectedFile = null;
-let ghostImg = null;
 
 function resizeOverlay() {
   const rect = cameraWrap.getBoundingClientRect();
@@ -27,16 +26,6 @@ function drawGuides() {
   const h = overlay.height;
   ctx.clearRect(0, 0, w, h);
 
-  if (ghostImg) {
-    ctx.save();
-    ctx.globalAlpha = 0.32;
-    const scale = Math.max(w / ghostImg.width, h / ghostImg.height);
-    const dw = ghostImg.width * scale;
-    const dh = ghostImg.height * scale;
-    ctx.drawImage(ghostImg, (w - dw) / 2, (h - dh) / 2, dw, dh);
-    ctx.restore();
-  }
-
   // Center distance-guide circle: frame the lesion here.
   const cx = w / 2;
   const cy = h / 2;
@@ -48,7 +37,7 @@ function drawGuides() {
   ctx.arc(cx, cy, r, 0, Math.PI * 2);
   ctx.stroke();
 
-  // Coin reference circle (~24mm 500-won-sized coin) in the corner for scale calibration.
+  // Coin reference circle (~24mm coin) in the corner for scale calibration.
   const coinR = Math.min(w, h) * 0.06;
   const coinX = coinR + 16;
   const coinY = h - coinR - 16;
@@ -61,28 +50,17 @@ function drawGuides() {
   ctx.fillStyle = "rgba(242,193,78,0.95)";
   ctx.font = "10px sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("동전", coinX, coinY + coinR + 14);
+  ctx.fillText("Coin", coinX, coinY + coinR + 14);
 
   ctx.fillStyle = "rgba(255,255,255,0.9)";
   ctx.font = "11px sans-serif";
-  ctx.fillText("병변을 원 안에", cx, cy - r - 10);
+  ctx.fillText("Center lesion here", cx, cy - r - 10);
 }
 
-async function loadGhostFromLesion() {
+async function loadLesionTitle() {
   try {
     const lesion = await apiFetch(`/api/lesions/${lesionId}`);
-    document.getElementById("capture-title").textContent = `${bodyPartLabel(lesion.body_part)} 촬영`;
-    if (lesion.captures.length > 0) {
-      const prev = lesion.captures[lesion.captures.length - 1];
-      const img = new Image();
-      img.onload = () => {
-        ghostImg = img;
-        drawGuides();
-      };
-      img.src = prev.image_path;
-      document.getElementById("guide-hint").textContent =
-        "이전 촬영 사진(반투명)에 맞춰 같은 각도로 촬영해주세요";
-    }
+    document.getElementById("capture-title").textContent = `${bodyPartLabel(lesion.body_part)} Capture`;
   } catch (e) {
     /* non-fatal */
   }
@@ -100,7 +78,7 @@ async function startCamera() {
     resizeOverlay();
   } catch (e) {
     document.getElementById("camera-error").textContent =
-      "카메라를 사용할 수 없어요. 아래 '사진 파일로 촬영/선택' 버튼을 사용해주세요.";
+      "Camera unavailable. Please use the 'Upload / Take Photo' button below.";
     document.getElementById("camera-error").classList.add("show");
     document.getElementById("shutter-btn").disabled = true;
   }
@@ -131,7 +109,7 @@ document.getElementById("shutter-btn").addEventListener("click", async () => {
   } else if (mode === "file" && selectedFile) {
     uploadCapture(selectedFile);
   } else {
-    alert("먼저 사진을 선택해주세요");
+    alert("Please select a photo first");
   }
 });
 
@@ -149,7 +127,7 @@ async function uploadCapture(blob) {
     });
     if (!res.ok) {
       const body = await res.json().catch(() => ({}));
-      throw new Error(body.detail || "업로드에 실패했습니다");
+      throw new Error(body.detail || "Upload failed");
     }
     const capture = await res.json();
     window.location.href = `/result.html?capture_id=${capture.id}`;
@@ -161,6 +139,6 @@ async function uploadCapture(blob) {
   }
 }
 
-loadGhostFromLesion();
+loadLesionTitle();
 startCamera();
 resizeOverlay();

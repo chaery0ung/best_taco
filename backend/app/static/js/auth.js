@@ -28,7 +28,7 @@ document.getElementById("login-btn").addEventListener("click", async () => {
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
   if (!email || !password) {
-    errorEl.textContent = "이메일과 비밀번호를 입력해주세요";
+    errorEl.textContent = "Please enter your email and password";
     errorEl.classList.add("show");
     return;
   }
@@ -49,7 +49,7 @@ document.getElementById("signup-btn").addEventListener("click", async () => {
   const email = document.getElementById("signup-email").value.trim();
   const password = document.getElementById("signup-password").value;
   if (!name || !email || !password) {
-    errorEl.textContent = "모든 항목을 입력해주세요";
+    errorEl.textContent = "Please fill in all fields";
     errorEl.classList.add("show");
     return;
   }

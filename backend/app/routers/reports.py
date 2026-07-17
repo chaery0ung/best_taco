@@ -33,7 +33,7 @@ def download_report(
 ):
     capture = db.query(models.Capture).filter(models.Capture.id == capture_id).first()
     if not capture:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="촬영 기록을 찾을 수 없습니다")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Capture not found")
 
     lesion = (
         db.query(models.Lesion)
@@ -41,17 +41,12 @@ def download_report(
         .first()
     )
     if not lesion:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="병변을 찾을 수 없습니다")
-
-    history = [
-        {"date": c.created_at.strftime("%m/%d"), "confidence": c.confidence} for c in lesion.captures
-    ]
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lesion not found")
 
     pdf_bytes = build_pdf(
         user_name=current_user.name,
         age=current_user.age,
         gender=current_user.gender,
-        skin_tone=current_user.skin_tone,
         body_part=lesion.body_part,
         lesion_label=lesion.label,
         classification=capture.classification,
@@ -60,7 +55,6 @@ def download_report(
         gemini_report=capture.gemini_report or "",
         capture_image_bytes=_read_upload(capture.image_path),
         heatmap_image_bytes=_read_upload(capture.heatmap_path),
-        history=history,
     )
 
     return StreamingResponse(

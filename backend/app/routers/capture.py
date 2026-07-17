@@ -1,4 +1,3 @@
-import datetime
 import os
 import uuid
 
@@ -26,7 +25,7 @@ def _get_owned_lesion(lesion_id: int, current_user: models.User, db: Session) ->
         .first()
     )
     if not lesion:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="병변을 찾을 수 없습니다")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Lesion not found")
     return lesion
 
 
@@ -46,16 +45,6 @@ def _to_detail(capture: models.Capture, lesion: models.Lesion) -> schemas.Captur
     )
 
 
-def _change_note(previous: models.Capture | None, current_classification: str) -> str | None:
-    if previous is None:
-        return None
-    days = (datetime.datetime.utcnow() - previous.created_at).days
-    when = f"{days}일 전" if days < 60 else f"약 {days // 30}개월 전"
-    if previous.classification == current_classification:
-        return f"{when} 촬영 결과와 동일한 분류로, 유의미한 변화가 관찰되지 않았습니다."
-    return f"{when} 촬영에서는 '{previous.classification}'(으)로 분류되었으나, 이번에는 분류가 변경되어 추가 확인이 필요합니다."
-
-
 @router.post("/lesions/{lesion_id}/captures", response_model=schemas.CaptureDetail, status_code=status.HTTP_201_CREATED)
 async def create_capture(
     lesion_id: int,
@@ -66,11 +55,11 @@ async def create_capture(
     lesion = _get_owned_lesion(lesion_id, current_user, db)
 
     if file.content_type not in ALLOWED_CONTENT_TYPES:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="이미지 파일(JPEG/PNG/WEBP)만 업로드할 수 있습니다")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Only JPEG/PNG/WEBP image files are allowed")
 
     image_bytes = await file.read()
     if len(image_bytes) > MAX_UPLOAD_BYTES:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="이미지 크기가 너무 큽니다 (최대 10MB)")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Image is too large (max 10MB)")
 
     # In production this upload goes to GCP Cloud Storage and the classification
     # call goes to a Vertex AI Endpoint; both are mocked for the demo.
@@ -85,9 +74,6 @@ async def create_capture(
     with open(os.path.join(UPLOAD_DIR, heatmap_name), "wb") as f:
         f.write(heatmap_bytes)
 
-    previous_capture = lesion.captures[-1] if lesion.captures else None
-    change_note = _change_note(previous_capture, result["classification"])
-
     gemini_report = mock_gemini.generate_report(
         classification=result["classification"],
         confidence=result["confidence"],
@@ -95,8 +81,6 @@ async def create_capture(
         body_part=lesion.body_part,
         age=current_user.age,
         gender=current_user.gender,
-        skin_tone=current_user.skin_tone,
-        change_note=change_note,
     )
 
     capture = models.Capture(
@@ -123,6 +107,6 @@ def get_capture(
 ):
     capture = db.query(models.Capture).filter(models.Capture.id == capture_id).first()
     if not capture:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="촬영 기록을 찾을 수 없습니다")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Capture not found")
     lesion = _get_owned_lesion(capture.lesion_id, current_user, db)
     return _to_detail(capture, lesion)
