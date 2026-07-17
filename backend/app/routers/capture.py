@@ -3,14 +3,12 @@ import os
 import uuid
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from google.api_core.exceptions import GoogleAPICallError
-from google.auth.exceptions import DefaultCredentialsError
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
 from ..auth import get_current_user
 from ..database import get_db
-from ..services import mock_classifier, mock_gemini, vertex_classifier
+from ..services import mock_classifier, mock_gemini
 
 router = APIRouter(prefix="/api", tags=["captures"])
 
@@ -74,22 +72,9 @@ async def create_capture(
     if len(image_bytes) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="이미지 크기가 너무 큽니다 (최대 10MB)")
 
-    # Classification calls the deployed Vertex AI endpoint; the Explainable AI
-    # heatmap isn't wired up yet, so that part stays mocked.
-    try:
-        result = vertex_classifier.classify(image_bytes)
-    except RuntimeError as e:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
-    except DefaultCredentialsError:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="GCP 인증 정보(GOOGLE_APPLICATION_CREDENTIALS)가 설정되지 않았습니다",
-        )
-    except GoogleAPICallError as e:
-        raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=f"Vertex AI 엔드포인트 호출 실패: {e.message or e}",
-        )
+    # In production this upload goes to GCP Cloud Storage and the classification
+    # call goes to a Vertex AI Endpoint; both are mocked for the demo.
+    result = mock_classifier.classify(image_bytes)
     heatmap_bytes = mock_classifier.generate_heatmap(image_bytes)
 
     file_id = uuid.uuid4().hex
