@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from .. import models, schemas
 from ..auth import get_current_user
 from ..database import get_db
-from ..services import mock_classifier, mock_gemini
+from ..services import mock_classifier, mock_gemini, vertex_classifier
 
 router = APIRouter(prefix="/api", tags=["captures"])
 
@@ -72,9 +72,12 @@ async def create_capture(
     if len(image_bytes) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="이미지 크기가 너무 큽니다 (최대 10MB)")
 
-    # In production this upload goes to GCP Cloud Storage and the classification
-    # call goes to a Vertex AI Endpoint; both are mocked locally for this demo.
-    result = mock_classifier.classify(image_bytes)
+    # Classification calls the deployed Vertex AI endpoint; the Explainable AI
+    # heatmap isn't wired up yet, so that part stays mocked.
+    try:
+        result = vertex_classifier.classify(image_bytes)
+    except RuntimeError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
     heatmap_bytes = mock_classifier.generate_heatmap(image_bytes)
 
     file_id = uuid.uuid4().hex
