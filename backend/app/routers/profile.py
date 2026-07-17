@@ -21,7 +21,6 @@ def update_profile(
 ):
     current_user.age = payload.age
     current_user.gender = payload.gender
-    current_user.skin_tone = payload.skin_tone
     db.commit()
     db.refresh(current_user)
     return current_user

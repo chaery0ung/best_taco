@@ -35,7 +35,6 @@ class UserOut(BaseModel):
 class ProfileUpdate(BaseModel):
     age: int
     gender: str
-    skin_tone: str
 
 
 class LesionCreate(BaseModel):
