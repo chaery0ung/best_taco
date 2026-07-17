@@ -3,6 +3,8 @@ import os
 import uuid
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from google.api_core.exceptions import GoogleAPICallError
+from google.auth.exceptions import DefaultCredentialsError
 from sqlalchemy.orm import Session
 
 from .. import models, schemas
@@ -78,6 +80,16 @@ async def create_capture(
         result = vertex_classifier.classify(image_bytes)
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
+    except DefaultCredentialsError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="GCP 인증 정보(GOOGLE_APPLICATION_CREDENTIALS)가 설정되지 않았습니다",
+        )
+    except GoogleAPICallError as e:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Vertex AI 엔드포인트 호출 실패: {e.message or e}",
+        )
     heatmap_bytes = mock_classifier.generate_heatmap(image_bytes)
 
     file_id = uuid.uuid4().hex
